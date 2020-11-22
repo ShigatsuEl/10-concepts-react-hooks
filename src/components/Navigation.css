@@ -1,0 +1,14 @@
+.nav__container {
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+table tr td a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.5s ease-in-out;
+}
+
+table tr td a:hover {
+  color: red;
+}
