@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# 10 Concepts React Hooks
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+Let's learn 10 React Hook concepts in practice
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## What is Hooks?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+React Hook은 React의 신박한 기능인데 결론적으로 말하면 function component가 state를 가질 수 있게 해준다.<br>
+즉, hooks는 react의 state machine에 연결하는 기본적인 방법이다.<br>
+또한 앱을 리액트 훅으로 만든다면 class component & didMount & render과 같은 작업을 하지 않아도 된다는 것이다.<br>
+이는 function programming(함수형 프로그래밍)이 가능하게 해줍니다.<br>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Concept List
 
-### `npm test`
+- [✅useState](#useState)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### useState
 
-### `npm run build`
+첫번째 훅인 useState()는 항상 2개의 value를 가진 배열을 return합니다.<br>
+첫번째 인자는 state이고 두번째 인자는 setState역할을 하는 함수이다. 꼭 이름이 state & setState가 되어야 하는 것은 아니다.<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+import
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+const [state, setState] = useState();
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+여기서 useState는 초기에 state를 initialState로 설정할 수 있는 옵션을 줍니다.
+ex) const [state, setState] = useState(1);
 
-### `npm run eject`
+그리고 useState의 2가지 value를 항상 지정하는 것은 아니며 원한다면
+const [state] = useState(1)[0];
+const [setState] = useState(1)[1];
+와 같이 설정해줄수도 있다.
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+useState() 훅을 사용해 state를 설정하는 방법은 다음과 같다.<br>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+function First() {
+  const [state, setState] = useState(1);
+  const incrementItem = () => setState(state + 1);
+  const decrementItem = () => setState(state - 1);
+  return (
+    <>
+      <Link to="/">Back Home</Link>
+      <div className="First">
+        <h1>Hellow VSCode! {state}</h1>
+        <h2>Start Learning React Hook Concept One</h2>
+        <button onClick={incrementItem}>IncrementItem</button>
+        <button onClick={decrementItem}>DecrementItem</button>
+      </div>
+    </>
+  );
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+위 코드는 리액트 훅이 나오고나서 가능한 코드이다.<br>
+만약 리액트 훅을 사용할 수 없었던 예전이라면 class component를 사용하여 state를 변경할 수 있었다.<br>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+이 클래스 컴포넌트는 위에 있는 함수형 컴포넌트에서 사용한 코드와 똑같은 역할을 한다.
 
-## Learn More
+class FirstUgly extends React.Component {
+  state = {
+    item: 1,
+  };
+  render() {
+    const { item } = this.state;
+    return (
+      <div className="First">
+        <h1>Hellow VSCode! {item}</h1>
+        <h2>Start Learning React Hook Concept One</h2>
+        <button onClick={this.incrementItem}>IncrementItem</button>
+        <button onClick={this.decrementItem}>DecrementItem</button>
+      </div>
+    );
+  }
+  incrementItem = () => {
+    this.setState((state) => {
+      return { item: state.item + 1 };
+    });
+  };
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  decrementItem = () => {
+    this.setState((state) => {
+      return { item: state.item - 1 };
+    });
+  };
+}
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+코드 길이부터 차이가 나는 것을 볼 수 있다. 만약에 코드길이가 더 길어진다면 차이는 더 벌어질 것이다.
+이렇게 훅 하나가 state 설정을 매우 간편하게 해주는 것을 도와주는 것을 알 수 있습니다.
+```
