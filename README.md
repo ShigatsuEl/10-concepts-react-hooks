@@ -23,6 +23,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
 - [✅useEffect](#useEffect)
 
+  - [✅useTitle](#useTitle)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -238,8 +240,8 @@ const Fourth = () => {
 useEffect는 2개의 인자를 받는다.<br>
 
 ```
-1️⃣Effect Function -> 상태가 변할때마다 실행될 함수이다.(필수)
-2️⃣Deps List -> Deps List에 있는 조건을 만족할때마다 Effect Function을 실행시킬 것이다.(선택)
+1️⃣Effect Function -> 상태가 변할때마다 실행될 함수이다.(componentDidMout역할)(필수)
+2️⃣Deps List -> Deps List에 있는 조건을 만족할때마다 Effect Function을 실행시킬 것이다.(componentWillUpdate역할)(선택)
 ```
 
 Fourth 컴포넌트에서 useEffect(sayHello)를 실행하면 component가 `componentWillUnmount` `componentDidMount` `componentWillUpdate`상태로 바뀔 때마다 실행됩니다.<br>
@@ -247,3 +249,36 @@ Fourth 컴포넌트에서 useEffect(sayHello)를 실행하면 component가 `comp
 마치 클래스 컴포넌트에서 componentWillUpdate가 발생하는 것과 똑같은 역할을 하게 되죠. 그렇기 때문에 Deps List를 빈 배열[]로 두게되면 조건에 맞는 것이 없어 sayHello를 업데이트 할 때마다 실행시키지 않을 것 입니다.<br>
 
 useEffect는 이것만 기억하자 -> `useEffect는 componentDidMount도 하며 componentWillUpdate도 하고 componentWillUnmount도 한다는 것이다.`<br>
+
+### useTitle
+
+다섯번째 훅은 `useTitle`입니다. useState와 useEffect를 써서 html title값을 변경하는 훅입니다.<br>
+useState와 useEffect를 이해하고 있다면 매우 쉽습니다.<br>
+
+```
+const useTitle = (initialTitle) => {
+  const [title, setTitle] = useState(initialTitle);
+  const updateTitle = () => {
+    const htmlTitle = document.querySelector("title");
+    htmlTitle.textContent = title;
+  };
+  useEffect(updateTitle);
+  return setTitle;
+};
+
+const Fifth = () => {
+  const titleUpdate = useTitle("Loading...");
+  setTimeout(() => titleUpdate("useTitle Page"), 5000);
+  return (
+    <div>
+      <h1>Hi! check your title~</h1>
+    </div>
+  );
+};
+```
+
+useState 훅의 인자로 title과 setTitle을 설정하였습니다.<br>
+그리고 useEffect의 Effect함수 updateTitle을 통해 title을 변경할 수 있습니다.<br>
+
+useTitle함수는 title값을 변경할 수 있는 함수 setTilte을 return합니다.<br>
+Fifth 컴포넌트에서 useTitle return값을 받아와 5초후에 titleUpdate함수를 실행시켜 "Loading..."에서 "useTitle Page"로 변경되는 것을 확인할 수 있습니다.<br>
