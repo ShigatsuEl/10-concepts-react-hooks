@@ -13,6 +13,9 @@ const useClick = (onClick) => {
       }
     };
   }, []);
+  if (typeof onClick !== "function") {
+    return;
+  }
   return element;
 };
 

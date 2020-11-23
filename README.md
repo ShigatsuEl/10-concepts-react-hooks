@@ -27,6 +27,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useClick](#useClick)
 
+  - [✅useConfirm & usePreventLeave](#useConfirm-&-usePreventLeave)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -349,3 +351,76 @@ useClick()훅의 useEffect()에서 element.current가 존재(component가 mount�
 이번 훅에서는 지난 훅에서 다뤄보지 않은 componentWillUnMount를 처리할 것 입니다.<br>
 componentWillUnmout는 useEffet함수의 첫번째 인자 Effect에서 return으로 실행할 수 있다.<br>
 다시 설명하면 return하게 되는 순간 componentWillUnMount 때 호출될 것이다. 여기서는 이벤트를 제거하는 것을 확인할 수 있습니다.<br>
+
+### useConfirm & usePreventLeave
+
+일곱번째는 `useConfirm`과 `usePreventLeave`입니다. 앞의 2개는 훅이 아닙니다. useState와 useEffect를 사용하지 않기 때문입니다.<br>
+훅이 아닌데도 다뤄보는 이유는 생각보다 유용하고 보다 함수형 프로그래밍답게 만들기 위해서입니다.(사실 함수나 다름없음)<br>
+
+1. useConfirm
+
+```
+const useConfirm = (message = "", onConfirm, onCancel) => {
+  if (!onConfirm || typeof onConfirm !== "function") {
+    return;
+  }
+  if (onCancel && typeof onCancel !== "function") {
+    return;
+  }
+
+  const confirmAction = () => {
+    if (window.confirm(message)) {
+      onConfirm();
+    } else {
+      onCancel();
+    }
+  };
+  return confirmAction;
+};
+
+const Seventh = () => {
+  const deleteWord = () => console.log("Delete the World hahahaha~~");
+  const abortWord = () => console.log("Are you scared?");
+  const confirmDelete = useConfirm("Sure?", deleteWord, abortWord);
+  return (
+    <>
+      <h1>Click button and Check your console!</h1>
+      <button onClick={confirmDelete}>Delete the World</button>
+    </>
+  );
+};
+```
+
+useConfirm은 사용자가 무언가를 하기전에 확인하는 것인데 예를들어 사용자가 버튼을 클릭하는 작업을 하면 이벤트를 실행하기 전에 메시지를 보여주고 싶은 것을 말한다.<br>
+useConfrim은 `message(String)` `onConrim(콜백함수)` `onCancel(콜백함수)` 3가지 인자를 받는다. 그리고 confirmAction함수를 return합니다.<br>
+버튼을 클릭 시, confrimAction함수는 클로저에 의해 윈도우창으로 onConfirm 또는 onCancel 콜백을 실행하여 세카이를 파괴합니다.<br>
+
+2. usePreventLeave
+
+```
+const usePreventLeave = () => {
+  const listener = (event) => {
+    event.preventDefault();
+    event.returnValue = "";
+  };
+  const enablePrevent = () => window.addEventListener("beforeunload", listener);
+  const disablePrevent = () =>
+    window.removeEventListener("beforeunload", listener);
+  return { enablePrevent, disablePrevent };
+};
+
+const Seventh = () => {
+  const { enablePrevent, disablePrevent } = usePreventLeave();
+  return (
+    <>
+      <h1>Protect Or Unprotect</h1>
+      <button onClick={enablePrevent}>Protect</button>
+      <button onClick={disablePrevent}>Unprotect</button>
+    </>
+  );
+};
+```
+
+usePreventLeave는 window창을 닫을 때 아직 저장되지 않은 것이 남아있다면 발생하는 함수이다.<br>
+usePreventLeave함수는 enablePrevent, disablePrevent 를 객체로 반환하고 클릭 시 실행되는 이벤트함수이다.<br>
+중요한 것은 이벤트콜백함수 listener를 보면 event.returnValue = "";를 없애면 이것은 동작하지 않을 것이다. + 크롬만 작동<br>
