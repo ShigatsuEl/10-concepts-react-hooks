@@ -60,6 +60,12 @@ const Navigation = () => {
             <Link to="/eighth-concept">useBeforeLeave</Link>
           </td>
         </tr>
+        <tr>
+          <td>09</td>
+          <td>
+            <Link to="/nineth-concept">useFadeIn & useNetwork</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );

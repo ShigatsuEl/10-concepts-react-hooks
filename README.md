@@ -31,6 +31,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useBeforeLeave](#useBeforeLeave)
 
+  - [useFadeIn & useNetwork](#useFadeIn-&-useNetwork)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -460,3 +462,81 @@ const Eighth = () => {
 ```
 
 마우스가 탭으로 이동하는 순간 콘솔로그에서 확인하실 수 있습니다.<br>
+
+### useFadeIn & useNetwork
+
+아홉번째 훅은 `useFadeIn`과 `useNetwork`입니다.<br>
+
+1. useFadeIn
+
+```
+const useFadeIn = (duration = 1, delay = 0) => {
+  const element = useRef();
+  useEffect(() => {
+    if (element.current) {
+      const { current } = element;
+      current.style.transition = `opacity ${duration}s ease-in-out ${delay}s`;
+      current.style.opacity = 1;
+    }
+  }, []);
+  if (typeof duration !== "number" || typeof delay !== "number") {
+    return;
+  }
+  return { ref: element, style: { opacity: 0 } };
+};
+
+const Nineth = () => {
+  const fadeInH1 = useFadeIn(3, 1);
+  const fadeInP = useFadeIn(3, 2);
+  return (
+    <div>
+      <h1 {...fadeInH1}>Hello!</h1>
+      <p {...fadeInP}>lolem ipsum blabla~~</p>
+    </div>
+  );
+};
+```
+
+`useFadeIn`은 useRef()훅을 사용해 h1 / p태그에 CSS opacity FadeIn효과를 주는 Hook이다.<br>
+useFadeIn은 return값으로 객체를 반환하는데 스프레드 연산자를 사용해 h1 / p태그에 props를 주었다.<br>
+따라서 h1태그와 p태그는 element.current값이 존재하므로 FadeIn효과가 적용될 수 있는 것이다.<br>
+
+2. useNetwork
+
+```
+const useNetwork = (onChange) => {
+  const [state, setState] = useState(navigator.onLine);
+  const handleConnet = () => {
+    if (typeof onChange === "function") {
+      onChange(navigator.onLine);
+    }
+    setState(navigator.onLine);
+  };
+  useEffect(() => {
+    window.addEventListener("online", handleConnet);
+    window.addEventListener("offline", handleConnet);
+    return () => {
+      window.removeEventListener("online", handleConnet);
+      window.removeEventListener("offline", handleConnet);
+    };
+  }, []);
+  return state;
+};
+
+const Nineth = () => {
+  const handleNetworkChange = (online) =>
+    console.log(online ? "We just went online" : "We are offline");
+  const onLine = useNetwork(handleNetworkChange);
+  return (
+    <div>
+      <h1>Try turn on network or off network</h1>
+      <h1>{onLine ? "Online" : "Offline"}</h1>
+    </div>
+  );
+};
+```
+
+`useNetwork`는 useState()훅을 사용하여 state초기값을 navigator.onLine을 주었다.(현재 네트워크가 연결되어있는지에 관한 boolean값)<br>
+useNetwork는 실행되면 윈도우이벤트 콜백함수에 의해 setState()함수가 실행되어 network 연결이 변경될때마다 h1태그에서 Online 또는 Offline을 확인할 수 있다.<br>
+또한 useNetwork는 하나의 콜백함수를 가지는데 굳이 이렇게 콜백함수를 만들어준 이유는 누군가 내가만든 훅을 사용해줄 때 콜백함수를 통해 해결하게 하기 위해서이다.<br>
+여기서는 콘솔을 통해 We just went online, We are offline 둘 중 하나를 확인해볼 수 있습니다.<br>
