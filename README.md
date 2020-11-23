@@ -29,6 +29,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useConfirm & usePreventLeave](#useConfirm-&-usePreventLeave)
 
+  - [✅useBeforeLeave](#useBeforeLeave)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -424,3 +426,37 @@ const Seventh = () => {
 usePreventLeave는 window창을 닫을 때 아직 저장되지 않은 것이 남아있다면 발생하는 함수이다.<br>
 usePreventLeave함수는 enablePrevent, disablePrevent 를 객체로 반환하고 클릭 시 실행되는 이벤트함수이다.<br>
 중요한 것은 이벤트콜백함수 listener를 보면 event.returnValue = "";를 없애면 이것은 동작하지 않을 것이다. + 크롬만 작동<br>
+
+### useBeforeLeave
+
+useBeforeLeave는 기본적으로 탭을 이동할 때 실행되는 훅입니다.<br>
+
+```
+const useBeforeLeave = (onBefore) => {
+  const handleLeave = (event) => {
+    const { clientY } = event;
+    if (clientY <= 0) {
+      onBefore();
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mouseleave", handleLeave);
+    return () => document.removeEventListener("mouseleave", handleLeave);
+  }, []);
+  if (typeof onBefore !== "function") {
+    return;
+  }
+};
+
+const Eighth = () => {
+  const beforeLeave = () => console.log("Plz don't leave :(");
+  useBeforeLeave(beforeLeave);
+  return (
+    <div>
+      <h1>If you move mouse on the tab, Check your console!</h1>
+    </div>
+  );
+};
+```
+
+마우스가 탭으로 이동하는 순간 콘솔로그에서 확인하실 수 있습니다.<br>

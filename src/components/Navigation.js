@@ -54,6 +54,12 @@ const Navigation = () => {
             <Link to="/seventh-concept">useConfirm & usePreventLeave</Link>
           </td>
         </tr>
+        <tr>
+          <td>08</td>
+          <td>
+            <Link to="/eighth-concept">useBeforeLeave</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );
