@@ -18,6 +18,12 @@ const Navigation = () => {
             <Link to="/first-concept">useState</Link>
           </td>
         </tr>
+        <tr>
+          <td>02</td>
+          <td>
+            <Link to="/second-concept">useInput</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );
