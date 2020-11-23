@@ -25,6 +25,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useTitle](#useTitle)
 
+  - [✅useClick](#useClick)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -282,3 +284,68 @@ useState 훅의 인자로 title과 setTitle을 설정하였습니다.<br>
 
 useTitle함수는 title값을 변경할 수 있는 함수 setTilte을 return합니다.<br>
 Fifth 컴포넌트에서 useTitle return값을 받아와 5초후에 titleUpdate함수를 실행시켜 "Loading..."에서 "useTitle Page"로 변경되는 것을 확인할 수 있습니다.<br>
+
+### useClick
+
+여섯번째 훅은 `useClick`입니다. useClick은 클릭을 할 시 발생하는 간단한 훅입니다.<br>
+useClick을 설명하기 전에 reference를 먼저 알아야 한다.<br>
+아래 예시를 봅시다.<br>
+
+```
+const Sixth = () => {
+  const element = useRef();
+  setTimeout(() => console.log(element));
+  return (
+    <div>
+      <h1 ref={element}>Hi! Click this and Check your console~</h1>
+    </div>
+  );
+};
+
+result
+{current: h1 .....};
+```
+
+reference는 기본적으로 우리의 component의 어떤 부분을 선택할 수 있는 방법이다.<br>
+useRef()훅을 사용하며 이것을 element에 저장했습니다. h1태그에서 ref={element}를 함으로써 element는 이제 h1태그를 참조할 수 있게 된 것입니다.<br>
+예시에서 setTimeout을 통해 콘솔로그해보면 element값이 객체로 출력되는데 current key값에 h1이 저장되어 있는 것을 확인할 수 있습니다.<br>
+쉽게 말해 useRef()는 바닐라 자바스크립트에서 마치 document.getElementById()를 사용한 것과 동등한 역할을 하는 것을 알 수 있다.<br>
+
+```
+const useClick = (onClick) => {
+  const element = useRef();
+  useEffect(() => {
+    if (element.current) {
+      element.current.addEventListener("click", onClick);
+    }
+    return () => {
+      if (element.current) {
+        element.current.removeEventListener("click", onClick);
+      }
+    };
+  }, []);
+  return element;
+};
+
+const Sixth = () => {
+  const onClick = () => console.log("Click!");
+  const head = useClick(onClick);
+  return (
+    <>
+      <Link to="/">Back Home</Link>
+      <div>
+        <h1 ref={head}>Hi! Click this and Check your console~</h1>
+      </div>
+    </>
+  );
+};
+```
+
+useRef()의 개념을 이해했다면 위의 useClick()훅을 살펴보자.<br>
+useRef()가 useClick() => head => h1 순서대로 참조를 하며 h1태그를 사용할 수 있다.<br>
+useClick()훅의 useEffect()에서 element.current가 존재(component가 mount된 시점)할 때 클릭이벤트를 생성하는 것을 알 수 있다.<br>
+중요한 것은 Deps List를 빈 객체로 두었는데 Deps List를 빈 객체로 두지 않으면 componentWillUpdate 시점에도 이벤트를 계속 추가할 것이기 때문이다.<br>
+
+이번 훅에서는 지난 훅에서 다뤄보지 않은 componentWillUnMount를 처리할 것 입니다.<br>
+componentWillUnmout는 useEffet함수의 첫번째 인자 Effect에서 return으로 실행할 수 있다.<br>
+다시 설명하면 return하게 되는 순간 componentWillUnMount 때 호출될 것이다. 여기서는 이벤트를 제거하는 것을 확인할 수 있습니다.<br>

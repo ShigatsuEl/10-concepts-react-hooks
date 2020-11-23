@@ -42,6 +42,12 @@ const Navigation = () => {
             <Link to="/fifth-concept">useTitle</Link>
           </td>
         </tr>
+        <tr>
+          <td>06</td>
+          <td>
+            <Link to="/sixth-concept">useClick</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );

@@ -5,6 +5,7 @@ import Second from "./routes/Second";
 import Third from "./routes/Third";
 import Fourth from "./routes/Fourth";
 import Fifth from "./routes/Fifth";
+import Sixth from "./routes/Sixth";
 
 import "./App.css";
 
@@ -17,6 +18,7 @@ function App() {
       <Route path="/third-concept" component={Third} />
       <Route path="/fourth-concept" component={Fourth} />
       <Route path="/fifth-concept" component={Fifth} />
+      <Route path="/sixth-concept" component={Sixth} />
     </HashRouter>
   );
 }
