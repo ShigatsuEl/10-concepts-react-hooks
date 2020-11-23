@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const content = [
   {
@@ -25,12 +26,15 @@ const useTabs = (initialTab, allTabs) => {
 const Third = () => {
   const { currentItem, changeItem } = useTabs(0, content);
   return (
-    <div>
-      {content.map((section, index) => (
-        <button onClick={() => changeItem(index)}>{section.tab}</button>
-      ))}
-      <div>{currentItem.content}</div>
-    </div>
+    <>
+      <Link to="/">Back Home</Link>
+      <div>
+        {content.map((section, index) => (
+          <button onClick={() => changeItem(index)}>{section.tab}</button>
+        ))}
+        <div>{currentItem.content}</div>
+      </div>
+    </>
   );
 };
 

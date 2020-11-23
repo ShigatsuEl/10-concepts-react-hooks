@@ -30,6 +30,12 @@ const Navigation = () => {
             <Link to="/third-concept">useTabs</Link>
           </td>
         </tr>
+        <tr>
+          <td>04</td>
+          <td>
+            <Link to="fourth-concept">useEffect</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );

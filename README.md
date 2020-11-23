@@ -21,6 +21,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useTabs](#useTabs)
 
+- [✅useEffect](#useEffect)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -204,3 +206,44 @@ const Third = () => {
 useTabs함수는 initialTab과 allTabs를 인자로 받는다. <-> useTabs 안의 useState()는 마찬가지로 index(state)와 setIndex(setState)를 가진다.<br>
 useTabs함수는 currentItem(현재 클릭된 아이템)과 changeItem(setIndex)을 객체로 반환<br>
 클릭을 하게될 시 state(index)가 바뀌게 되어 현재 클릭된 아이템 또한 바뀌게 되고 클릭된 아이템의 content가 새로 rendering 하게 된다.<br>
+
+### useEffect
+
+네번째 훅은 `useEffect`이다. useEffect는 아주 많은 use를 가지고 있다.<br>
+이 말은 useEffect는 `componentWillUnmount` `componentDidMount` `componentWillUpdate`와 아주 비슷하다.<br>
+React Hooks로 작업을 하게 된다면 앞에서 말한 3가지 함수들은 아주 중요한 역할을 할 것이다.<br>
+예시를 봅시다.<br>
+
+```
+const Fourth = () => {
+  const sayHello = () => console.log("hello!");
+  const [number, setNumber] = useState(0);
+  const [aNumber, setAnumber] = useState(0);
+  useEffect(sayHello);
+  // useEffect(sayHello, []); // deps를 빈 배열로 설정하면 어떤 버튼을 클릭해도 componentDidWillUpdate가 발생하지 않는다.
+  // useEffect(sayHello, [number]); // number를 deps리스트에 지정할 시 number값이 바뀔때마다 sayHello(Effect)가 실행된다.
+  return (
+    <>
+      <Link to="/">Back Home</Link>
+      <div>
+        <div>Hi! Check your console</div>
+        <button onClick={() => setNumber(number + 1)}>{number}</button>
+        <button onClick={() => setAnumber(aNumber + 1)}>{aNumber}</button>
+      </div>
+    </>
+  );
+};
+```
+
+useEffect는 2개의 인자를 받는다.<br>
+
+```
+1️⃣Effect Function -> 상태가 변할때마다 실행될 함수이다.(필수)
+2️⃣Deps List -> Deps List에 있는 조건을 만족할때마다 Effect Function을 실행시킬 것이다.(선택)
+```
+
+Fourth 컴포넌트에서 useEffect(sayHello)를 실행하면 component가 `componentWillUnmount` `componentDidMount` `componentWillUpdate`상태로 바뀔 때마다 실행됩니다.<br>
+그런데 만약 Deps List에 조건을 주어 useEffect(sayHello, [number])처럼 하게되면 number가 바뀌는 조건하에 sayHello함수가 실행될 것입니다.<br>
+마치 클래스 컴포넌트에서 componentWillUpdate가 발생하는 것과 똑같은 역할을 하게 되죠. 그렇기 때문에 Deps List를 빈 배열[]로 두게되면 조건에 맞는 것이 없어 sayHello를 업데이트 할 때마다 실행시키지 않을 것 입니다.<br>
+
+useEffect는 이것만 기억하자 -> `useEffect는 componentDidMount도 하며 componentWillUpdate도 하고 componentWillUnmount도 한다는 것이다.`<br>
