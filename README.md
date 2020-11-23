@@ -17,7 +17,9 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
 - [✅useState](#useState)
 
-- [✅useInput](#useInput)
+  - [✅useInput](#useInput)
+
+  - [✅useTabs](#useTabs)
 
 ### useState
 
@@ -149,3 +151,56 @@ useState내에는 state를 업데이트 할 수 있는 setState 함수를 가지
 반환된 value와 onChange이벤트를 input에 적용하여 항상 업데이트 할 수 있게 하였다.<br>
 여기서 우리는 useInput의 2번째 파라미터(validator)를 검사하는 것을 볼 수 있는데 validator는 함수인지 확인하고 return값이 true인지 false인지 판단하여 setValue를 할 수 있게 하였다.<br>
 처음 보면 로직이 어떻게 짜여진지 알아보기 힘든데 천천히 따라가다보면 결국 함수와 함수사이의 연결이라는 것을 확인할 수 있을 것이다.<br>
+
+### useTabs
+
+세번째 훅은 `useTabs`이다. 우리가 할 것은 단지 Tab을 눌렀을 때 state를 change하는 것이다.<br>
+
+먼저 어떤 API 혹은 다른 무언가로부터 가져오고 싶은 것이 있다고 가정하자.<br>
+
+```
+const content = [
+  {
+    tab: "Section 1",
+    content: "I'm the content of the Section 1",
+  },
+  {
+    tab: "Section 2",
+    content: "I'm the content of the Section 2",
+  },
+];
+
+단지 배열일 뿐이다. 쫄지마라.
+```
+
+```
+// 리액트 훅 useState를 사용한 useTabs함수
+const useTabs = (initialTab, allTabs) => {
+  const [index, setIndex] = useState(initialTab);
+  if (!allTabs || !Array.isArray(allTabs)) { // 받은 배열이 배열인지 확인하기 위함(false -> return으로 함수종료)
+    return;
+  }
+  return {
+    currentItem: allTabs[index],
+    changeItem: setIndex,
+  };
+};
+
+// Third 컴포넌트
+const Third = () => {
+  const { currentItem, changeItem } = useTabs(0, content);
+  return (
+    <div>
+      {content.map((section, index) => (
+        <button onClick={() => changeItem(index)}>{section.tab}</button>
+      ))}
+      <div>{currentItem.content}</div>
+    </div>
+  );
+};
+```
+
+앞에서 다 설명해서 할 부분이 없을 것 같다.<br>
+useTabs함수는 initialTab과 allTabs를 인자로 받는다. <-> useTabs 안의 useState()는 마찬가지로 index(state)와 setIndex(setState)를 가진다.<br>
+useTabs함수는 currentItem(현재 클릭된 아이템)과 changeItem(setIndex)을 객체로 반환<br>
+클릭을 하게될 시 state(index)가 바뀌게 되어 현재 클릭된 아이템 또한 바뀌게 되고 클릭된 아이템의 content가 새로 rendering 하게 된다.<br>
