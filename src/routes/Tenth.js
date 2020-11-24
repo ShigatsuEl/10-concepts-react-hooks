@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 // useScroll Hook
 const useScroll = () => {
@@ -47,6 +48,7 @@ const Tenth = () => {
   const { element, triggerFull, exitFull } = useFullScreen(isFullScr);
   return (
     <>
+      <Link to="/">Back Home</Link>
       <div style={{ height: "1000vh" }}>
         <h1 style={{ position: "fixed", color: y > 100 ? "red" : "blue" }}>
           Hi! Try to scroll down

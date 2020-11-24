@@ -72,6 +72,12 @@ const Navigation = () => {
             <Link to="/tenth-concept">useScroll & useFullscreen</Link>
           </td>
         </tr>
+        <tr>
+          <td>11</td>
+          <td>
+            <Link to="/eleventh-concept">useNotification</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );

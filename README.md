@@ -35,6 +35,8 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useScroll & useFullscreen](#useScroll-&-useFullscreen)
 
+  - [useNotification](#useNotification)
+
 ### useState
 
 첫번째 훅인 `useState`는 항상 2개의 value를 가진 배열을 return합니다.<br>
@@ -629,3 +631,34 @@ const Tenth = () => {
 
 FullScreen버튼과 exitFullScreen버튼이 존재하고 각각 클릭 시 triggerFull & exitFull함수가 실행된다.<br>
 useFullScreen함수는 콜백함수를 인자로 가지는데 이 콜백함수는 풀스크린인지 아닌지를 확인해주는 역할을 한다.<br>
+
+### useNotification
+
+열한번째는 `useNotification`입니다. useNotification은 훅을 사용하지 않은 함수입니다.<br>
+
+```
+const useNotification = (title, options) => {
+  if (!("Notification" in window)) { // Notification은 윈도우에서만 작동하므로 그게 아니라면 함수를 종료
+    return;
+  }
+
+  const fireNotif = () => {
+    if (Notification.permission !== "granted") { // permission은 denied / granted / default 중 하나이다.
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          new Notification(title, options);
+        } else {
+          return;
+        }
+      });
+    } else {
+      new Notification(title, options);
+    }
+  };
+
+  return fireNotif;
+};
+```
+
+useNotifiation은 보는 것과 같이 useState도 useEffect도 사용하지 않았다.<br>
+버튼을 클릭 시 fireNotif함수가 실행되어 새 Notification을 생성한다.<br>
