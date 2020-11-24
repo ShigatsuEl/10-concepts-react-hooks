@@ -9,6 +9,7 @@ import Sixth from "./routes/Sixth";
 import Seventh from "./routes/Seventh";
 import Eighth from "./routes/Eighth";
 import Nineth from "./routes/Nineth";
+import Tenth from "./routes/Tenth";
 
 import "./App.css";
 
@@ -25,6 +26,7 @@ function App() {
       <Route path="/seventh-concept" component={Seventh} />
       <Route path="/eighth-concept" component={Eighth} />
       <Route path="/nineth-concept" component={Nineth} />
+      <Route path="/tenth-concept" component={Tenth} />
     </HashRouter>
   );
 }

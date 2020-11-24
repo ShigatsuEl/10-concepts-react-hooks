@@ -31,7 +31,9 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useBeforeLeave](#useBeforeLeave)
 
-  - [useFadeIn & useNetwork](#useFadeIn-&-useNetwork)
+  - [✅useFadeIn & useNetwork](#useFadeIn-&-useNetwork)
+
+  - [✅useScroll & useFullscreen](#useScroll-&-useFullscreen)
 
 ### useState
 
@@ -540,3 +542,90 @@ const Nineth = () => {
 useNetwork는 실행되면 윈도우이벤트 콜백함수에 의해 setState()함수가 실행되어 network 연결이 변경될때마다 h1태그에서 Online 또는 Offline을 확인할 수 있다.<br>
 또한 useNetwork는 하나의 콜백함수를 가지는데 굳이 이렇게 콜백함수를 만들어준 이유는 누군가 내가만든 훅을 사용해줄 때 콜백함수를 통해 해결하게 하기 위해서이다.<br>
 여기서는 콘솔을 통해 We just went online, We are offline 둘 중 하나를 확인해볼 수 있습니다.<br>
+
+### useScroll & useFullscreen
+
+10번째 훅은 `useScroll`과 `useFullscreen`입니다.<br>
+
+1. useScroll
+
+```
+const useScroll = () => {
+  const [state, setState] = useState({
+    x: 0,
+    y: 0,
+  });
+  const onScroll = (e) => {
+    setState({ x: window.scrollX, y: window.scrollY });
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return state;
+};
+
+const Tenth = () => {
+  const { y } = useScroll();
+
+  return (
+    <>
+      <div style={{ height: "1000vh" }}>
+        <h1 style={{ position: "fixed", color: y > 100 ? "red" : "blue" }}>
+          Hi! Try to scroll down
+        </h1>
+    </>
+  );
+};
+```
+
+scroll이벤트를 알고 있다면 어렵지 않게 사용할 수 있습니다.<br>
+useState({x,y})를 가지며 스크롤Y가 100을 초과할 시 CSS color가 변경되게 useEffect를 사용했습니다.<br>
+
+2. useFullscreen
+
+```
+const useFullScreen = (callback) => {
+  const element = useRef();
+  const runCb = (isFull) => { // useFullScreen함수의 콜백함수 인자를 전달해주는 함수
+    if (callback && typeof callback === "function") {
+      callback(isFull);
+    }
+  };
+  const triggerFull = () => {
+    if (element.current) {
+      element.current.requestFullscreen(); // element에 requestFullscreen()을 걸어준다.
+      runCb(true);
+    }
+  };
+  const exitFull = () => {
+    document.exitFullscreen(); // 반대로 나올때는 document에 exitFullscreen()을 걸어준다.
+    runCb(false);
+  };
+  return { element, triggerFull, exitFull };
+};
+
+const Tenth = () => {
+  const isFullScr = (isFull) => {
+    console.log(isFull ? "We are FullScr" : "We are smallScr");
+  };
+  const { element, triggerFull, exitFull } = useFullScreen(isFullScr);
+  return (
+    <>
+      <div style={{ height: "1000vh" }}>
+        <div ref={element}>
+          <img
+            src="https://ojsfile.ohmynews.com/STD_IMG_FILE/2020/0403/IE002625830_STD.jpg"
+            alt=""
+          />
+          <button onClick={exitFull}>Make exitFullScreen</button>
+        </div>
+        <button onClick={triggerFull}>Make FullScreen</button>
+      </div>
+    </>
+  );
+};
+```
+
+FullScreen버튼과 exitFullScreen버튼이 존재하고 각각 클릭 시 triggerFull & exitFull함수가 실행된다.<br>
+useFullScreen함수는 콜백함수를 인자로 가지는데 이 콜백함수는 풀스크린인지 아닌지를 확인해주는 역할을 한다.<br>

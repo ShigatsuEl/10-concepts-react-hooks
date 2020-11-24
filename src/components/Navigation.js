@@ -66,6 +66,12 @@ const Navigation = () => {
             <Link to="/nineth-concept">useFadeIn & useNetwork</Link>
           </td>
         </tr>
+        <tr>
+          <td>10</td>
+          <td>
+            <Link to="/tenth-concept">useScroll & useFullscreen</Link>
+          </td>
+        </tr>
       </tbody>
     </table>
   );
