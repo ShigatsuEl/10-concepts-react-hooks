@@ -11,6 +11,7 @@ import Eighth from "./routes/Eighth";
 import Nineth from "./routes/Nineth";
 import Tenth from "./routes/Tenth";
 import Eleventh from "./routes/Eleventh";
+import Twelveth from "./routes/Twelveth";
 
 import "./App.css";
 
@@ -29,6 +30,7 @@ function App() {
       <Route path="/nineth-concept" component={Nineth} />
       <Route path="/tenth-concept" component={Tenth} />
       <Route path="/eleventh-concept" component={Eleventh} />
+      <Route path="/twelveth-concept" component={Twelveth} />
     </HashRouter>
   );
 }

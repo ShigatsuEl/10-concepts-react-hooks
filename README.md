@@ -35,7 +35,9 @@ React Hook은 React의 신박한 기능인데 결론적으로 말하면 function
 
   - [✅useScroll & useFullscreen](#useScroll-&-useFullscreen)
 
-  - [useNotification](#useNotification)
+  - [✅useNotification](#useNotification)
+
+  - [✅useAxios](#useAxios)
 
 ### useState
 
@@ -662,3 +664,64 @@ const useNotification = (title, options) => {
 
 useNotifiation은 보는 것과 같이 useState도 useEffect도 사용하지 않았다.<br>
 버튼을 클릭 시 fireNotif함수가 실행되어 새 Notification을 생성한다.<br>
+
+### useAxios
+
+열두번째 마지막 훅 `useAxios`입니다.<br>
+기본적으로 axios는 HTTPrequest를 만드는 것을 알고있어야 합니다.<br>
+
+```
+const useAxios = (options, axiosInstance = defaultAxios) => {
+  const [state, setState] = useState({ //state를 설정하는 useState훅
+    loading: true,
+    error: null,
+    data: null,
+  });
+  const [trigger, setTrigger] = useState(0); // trigger를 설정하는 useState훅
+
+  const refetch = () => {
+    setState({
+      ...state, // 이렇게 하면 초기에 loading error data 모두 props로 설정 후 loading: true부분만 바뀌게 된다.
+      loading: true,
+    });
+    setTrigger(Date.now());
+  };
+
+  useEffect(() => {
+    axiosInstance(options)
+      .then((data) => {
+        setState({
+          ...state,
+          loading: false,
+          data,
+        });
+      })
+      .catch((error) => {
+        setState({ ...state, loading: false, error });
+      });
+  }, [trigger]); // trigger가 변경될 때마다 axios를 발생시킴
+  if (!options.url) return;
+
+  return { ...state, refetch };
+};
+
+const Twelveth = () => {
+  const { loading, error, data, refetch } = useAxios({
+    url:
+      "https://cors-anywhere.herokuapp.com/https://yts.am/api/v2/list_movies.json", // cors-policy 차단 회피방법
+  });
+  return (
+    <>
+      <div>
+        <h1>{data && data.status}</h1>
+        <h2>{loading && "Loading"}</h2>
+        <button onClick={refetch}>Refetch</button> // 버튼을 누를때마다 refetch함수가 실행되어 HTTPrequest를 요청
+      </div>
+    </>
+  );
+};
+```
+
+useAxios는 2개의 useState훅을 사용합니다. 하나는 axios정보에 관한 state, 다른 하나는 refetch시키기 위한 trigger state입니다.<br>
+또한 useAxios는 2개의 인자를 가지는데 하나는 url을 받기위한 인자이며 하나는 axios를 사용하기 위한 인자입니다.<br>
+trigger가 변경될 때마다 refetch시키기 위해 Date.now()메서드를 사용해 trigger를 계속해서 변경할 수 있습니다.<br>
