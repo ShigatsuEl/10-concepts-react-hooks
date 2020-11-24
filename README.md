@@ -117,6 +117,8 @@ class FirstUgly extends React.Component {
 이렇게 훅 하나가 state 설정을 매우 간편하게 해주는 것을 도와주는 것을 알 수 있습니다.
 ```
 
+**[Back to the top🔼](#Concept-List)**
+
 ### useInput
 
 두번째 훅은 `useInput`이다. useInput은 기본적으로 input을 업데이트 하는 훅이다.<br>
@@ -169,6 +171,8 @@ useState내에는 state를 업데이트 할 수 있는 setState 함수를 가지
 반환된 value와 onChange이벤트를 input에 적용하여 항상 업데이트 할 수 있게 하였다.<br>
 여기서 우리는 useInput의 2번째 파라미터(validator)를 검사하는 것을 볼 수 있는데 validator는 함수인지 확인하고 return값이 true인지 false인지 판단하여 setValue를 할 수 있게 하였다.<br>
 처음 보면 로직이 어떻게 짜여진지 알아보기 힘든데 천천히 따라가다보면 결국 함수와 함수사이의 연결이라는 것을 확인할 수 있을 것이다.<br>
+
+**[Back to the top🔼](#Concept-List)**
 
 ### useTabs
 
@@ -223,6 +227,8 @@ useTabs함수는 initialTab과 allTabs를 인자로 받는다. <-> useTabs 안�
 useTabs함수는 currentItem(현재 클릭된 아이템)과 changeItem(setIndex)을 객체로 반환<br>
 클릭을 하게될 시 state(index)가 바뀌게 되어 현재 클릭된 아이템 또한 바뀌게 되고 클릭된 아이템의 content가 새로 rendering 하게 된다.<br>
 
+**[Back to the top🔼](#Concept-List)**
+
 ### useEffect
 
 네번째 훅은 `useEffect`이다. useEffect는 아주 많은 use를 가지고 있다.<br>
@@ -264,6 +270,8 @@ Fourth 컴포넌트에서 useEffect(sayHello)를 실행하면 component가 `comp
 
 useEffect는 이것만 기억하자 -> `useEffect는 componentDidMount도 하며 componentWillUpdate도 하고 componentWillUnmount도 한다는 것이다.`<br>
 
+**[Back to the top🔼](#Concept-List)**
+
 ### useTitle
 
 다섯번째 훅은 `useTitle`입니다. useState와 useEffect를 써서 html title값을 변경하는 훅입니다.<br>
@@ -296,6 +304,8 @@ useState 훅의 인자로 title과 setTitle을 설정하였습니다.<br>
 
 useTitle함수는 title값을 변경할 수 있는 함수 setTilte을 return합니다.<br>
 Fifth 컴포넌트에서 useTitle return값을 받아와 5초후에 titleUpdate함수를 실행시켜 "Loading..."에서 "useTitle Page"로 변경되는 것을 확인할 수 있습니다.<br>
+
+**[Back to the top🔼](#Concept-List)**
 
 ### useClick
 
@@ -361,6 +371,8 @@ useClick()훅의 useEffect()에서 element.current가 존재(component가 mount�
 이번 훅에서는 지난 훅에서 다뤄보지 않은 componentWillUnMount를 처리할 것 입니다.<br>
 componentWillUnmout는 useEffet함수의 첫번째 인자 Effect에서 return으로 실행할 수 있다.<br>
 다시 설명하면 return하게 되는 순간 componentWillUnMount 때 호출될 것이다. 여기서는 이벤트를 제거하는 것을 확인할 수 있습니다.<br>
+
+**[Back to the top🔼](#Concept-List)**
 
 ### useConfirm & usePreventLeave
 
@@ -435,6 +447,8 @@ usePreventLeave는 window창을 닫을 때 아직 저장되지 않은 것이 남
 usePreventLeave함수는 enablePrevent, disablePrevent 를 객체로 반환하고 클릭 시 실행되는 이벤트함수이다.<br>
 중요한 것은 이벤트콜백함수 listener를 보면 event.returnValue = "";를 없애면 이것은 동작하지 않을 것이다. + 크롬만 작동<br>
 
+**[Back to the top🔼](#Concept-List)**
+
 ### useBeforeLeave
 
 useBeforeLeave는 기본적으로 탭을 이동할 때 실행되는 훅입니다.<br>
@@ -468,6 +482,8 @@ const Eighth = () => {
 ```
 
 마우스가 탭으로 이동하는 순간 콘솔로그에서 확인하실 수 있습니다.<br>
+
+**[Back to the top🔼](#Concept-List)**
 
 ### useFadeIn & useNetwork
 
@@ -546,6 +562,8 @@ const Nineth = () => {
 useNetwork는 실행되면 윈도우이벤트 콜백함수에 의해 setState()함수가 실행되어 network 연결이 변경될때마다 h1태그에서 Online 또는 Offline을 확인할 수 있다.<br>
 또한 useNetwork는 하나의 콜백함수를 가지는데 굳이 이렇게 콜백함수를 만들어준 이유는 누군가 내가만든 훅을 사용해줄 때 콜백함수를 통해 해결하게 하기 위해서이다.<br>
 여기서는 콘솔을 통해 We just went online, We are offline 둘 중 하나를 확인해볼 수 있습니다.<br>
+
+**[Back to the top🔼](#Concept-List)**
 
 ### useScroll & useFullscreen
 
@@ -634,6 +652,8 @@ const Tenth = () => {
 FullScreen버튼과 exitFullScreen버튼이 존재하고 각각 클릭 시 triggerFull & exitFull함수가 실행된다.<br>
 useFullScreen함수는 콜백함수를 인자로 가지는데 이 콜백함수는 풀스크린인지 아닌지를 확인해주는 역할을 한다.<br>
 
+**[Back to the top🔼](#Concept-List)**
+
 ### useNotification
 
 열한번째는 `useNotification`입니다. useNotification은 훅을 사용하지 않은 함수입니다.<br>
@@ -664,6 +684,8 @@ const useNotification = (title, options) => {
 
 useNotifiation은 보는 것과 같이 useState도 useEffect도 사용하지 않았다.<br>
 버튼을 클릭 시 fireNotif함수가 실행되어 새 Notification을 생성한다.<br>
+
+**[Back to the top🔼](#Concept-List)**
 
 ### useAxios
 
@@ -725,3 +747,22 @@ const Twelveth = () => {
 useAxios는 2개의 useState훅을 사용합니다. 하나는 axios정보에 관한 state, 다른 하나는 refetch시키기 위한 trigger state입니다.<br>
 또한 useAxios는 2개의 인자를 가지는데 하나는 url을 받기위한 인자이며 하나는 axios를 사용하기 위한 인자입니다.<br>
 trigger가 변경될 때마다 refetch시키기 위해 Date.now()메서드를 사용해 trigger를 계속해서 변경할 수 있습니다.<br>
+
+**[Back to the top🔼](#Concept-List)**
+
+---
+
+## Finish
+
+실제로는 15가지의 훅을 만들어보면서 useState, useEffect 등, 많은 Hook이 어떻게 만들어졌는지 알 수 있었다.<br>
+또한 함수형 프로그래밍을 사용하면서 어려운 것도 많았지만 많은 것들을 배울 수 있었다.<br>
+
+그리고 앞서 다룬 Hooks는 몇가지 되지 않는다. 더 많은 Hook을 다뤄보며 자신의 것으로 만드는 단계가 필요할 것이다.<br>
+리액트 공식 레퍼런스에 가면 아직 다루지 못한 Hook들을 알려주고 있기에 조만간 읽어보면서 직접 사용해 보려고한다.<br>
+
+마지막으로 나는 자바스크립트를 익숙해질때까지 사용을 했기 때문에 리액트가 어렵게 다가오지 않았다.<br>
+그렇기 때문에 든 생각은 바닐라 자바스크립트(기초)가 쌓이지 않으면 앞으로 어떤 라이브러리가 생겨도 사용하기 어렵겠다는 생각이 들었다.<br>
+라이브러리는 그저 도구일 뿐이지 내 실력을 높이기 위해서는 바닐라 자바스크립트와 ES6를 통해 많은 것들을 만들어봐야 할 것이다.<br>
+이번 Hook강의가 끝나고 리액트 멤버십으로 넘어가겠지만 그것이 끝나고 난 뒤엔 새로운 것들을 찾아서 도전하는 시도가 필요하다고 느껴지는 바이다..<br>
+
+**[Back to the top🔼](#10-Concepts-React-Hooks)**
